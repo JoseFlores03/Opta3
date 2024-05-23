@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using Npgsql;
 using Opta3.Repositorio;
@@ -164,4 +164,223 @@ namespace opta3.Repositorio
             return facturas;
         }
     }
+}*/
+/*using Npgsql;
+using Opta3.Modelo;
+using System;
+using System.Collections.Generic;
+
+public class FacturaRepository
+{
+    private readonly NpgsqlConnection _connection;
+
+    public FacturaRepository(NpgsqlConnection connection)
+    {
+        _connection = connection;
+    }
+
+    public void InsertarFactura(Factura factura)
+    {
+        try
+        {
+            string query = "INSERT INTO \"Factura\" (\"Idfactura\", \"Idcliente\", \"Nrofactura\", \"Fechahora\", \"Total\", \"Total5\", \"Total10\", totaliva, \"Totalletras\", \"Sucursal\") VALUES (@Idfactura, @Idcliente, @Nrofactura, @Fechahora, @Total, @Total5, @Total10, @Totaliva, @Totalletras, @Sucursal)";
+            using (var command = new NpgsqlCommand(query, _connection))
+            {
+                command.Parameters.AddWithValue("@Idfactura", factura.Idfactura);
+                command.Parameters.AddWithValue("@Idcliente", factura.Idcliente);
+                command.Parameters.AddWithValue("@Nrofactura", factura.Nrofactura);
+                command.Parameters.AddWithValue("@Fechahora", factura.Fechahora);
+                command.Parameters.AddWithValue("@Total", factura.Total);
+                command.Parameters.AddWithValue("@Total5", factura.Total5);
+                command.Parameters.AddWithValue("@Total10", factura.Total10);
+                command.Parameters.AddWithValue("@Totaliva", factura.Totaliva);
+                command.Parameters.AddWithValue("@Totalletras", factura.Totalletras);
+                command.Parameters.AddWithValue("@Sucursal", factura.Sucursal);
+                command.ExecuteNonQuery();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error al insertar factura: " + ex.Message);
+        }
+    }
+
+    public Factura ObtenerFacturaPorId(int id)
+    {
+        try
+        {
+            string query = "SELECT * FROM \"Factura\" WHERE \"Idfactura\" = @Id";
+            using (var command = new NpgsqlCommand(query, _connection))
+            {
+                command.Parameters.AddWithValue("@Id", id);
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        return new Factura
+                        {
+                            Idfactura = reader.GetInt32(reader.GetOrdinal("Idfactura")),
+                            Idcliente = reader.GetInt32(reader.GetOrdinal("Idcliente")),
+                            Nrofactura = reader.GetString(reader.GetOrdinal("Nrofactura")),
+                            Fechahora = reader.GetString(reader.GetOrdinal("Fechahora")),
+                            Total = reader.GetDecimal(reader.GetOrdinal("Total")),
+                            Total5 = reader.GetDecimal(reader.GetOrdinal("Total5")),
+                            Total10 = reader.GetDecimal(reader.GetOrdinal("Total10")),
+                            Totaliva = reader.GetDecimal(reader.GetOrdinal("totaliva")),
+                            Totalletras = reader.GetString(reader.GetOrdinal("Totalletras")),
+                            Sucursal = reader.GetString(reader.GetOrdinal("Sucursal"))
+                        };
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error al obtener factura: " + ex.Message);
+        }
+        return null;
+    }
+
+    public List<Factura> ObtenerTodasLasFacturas()
+    {
+        var facturas = new List<Factura>();
+        try
+        {
+            string query = "SELECT * FROM \"Factura\"";
+            using (var command = new NpgsqlCommand(query, _connection))
+            {
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        facturas.Add(new Factura
+                        {
+                            Idfactura = reader.GetInt32(reader.GetOrdinal("Idfactura")),
+                            Idcliente = reader.GetInt32(reader.GetOrdinal("Idcliente")),
+                            Nrofactura = reader.GetString(reader.GetOrdinal("Nrofactura")),
+                            Fechahora = reader.GetString(reader.GetOrdinal("Fechahora")),
+                            Total = reader.GetDecimal(reader.GetOrdinal("Total")),
+                            Total5 = reader.GetDecimal(reader.GetOrdinal("Total5")),
+                            Total10 = reader.GetDecimal(reader.GetOrdinal("Total10")),
+                            Totaliva = reader.GetDecimal(reader.GetOrdinal("totaliva")),
+                            Totalletras = reader.GetString(reader.GetOrdinal("Totalletras")),
+                            Sucursal = reader.GetString(reader.GetOrdinal("Sucursal"))
+                        });
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error al obtener facturas: " + ex.Message);
+        }
+        return facturas;
+    }
+
+    public void ActualizarFactura(Factura factura)
+    {
+        try
+        {
+            string query = "UPDATE \"Factura\" SET \"Idcliente\" = @Idcliente, \"Nrofactura\" = @Nrofactura, \"Fechahora\" = @Fechahora, \"Total\" = @Total, \"Total5\" = @Total5, \"Total10\" = @Total10, totaliva = @Totaliva, \"Totalletras\" = @Totalletras, \"Sucursal\" = @Sucursal WHERE \"Idfactura\" = @Idfactura";
+            using (var command = new NpgsqlCommand(query, _connection))
+            {
+                command.Parameters.AddWithValue("@Idfactura", factura.Idfactura);
+                command.Parameters.AddWithValue("@Idcliente", factura.Idcliente);
+                command.Parameters.AddWithValue("@Nrofactura", factura.Nrofactura);
+                command.Parameters.AddWithValue("@Fechahora", factura.Fechahora);
+                command.Parameters.AddWithValue("@Total", factura.Total);
+                command.Parameters.AddWithValue("@Total5", factura.Total5);
+                command.Parameters.AddWithValue("@Total10", factura.Total10);
+                command.Parameters.AddWithValue("@Totaliva", factura.Totaliva);
+                command.Parameters.AddWithValue("@Totalletras", factura.Totalletras);
+                command.Parameters.AddWithValue("@Sucursal", factura.Sucursal);
+                command.ExecuteNonQuery();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error al actualizar factura: " + ex.Message);
+        }
+    }
+
+    public void EliminarFactura(int id)
+    {
+        try
+        {
+            string query = "DELETE FROM \"Factura\" WHERE \"Idfactura\" = @Id";
+            using (var command = new NpgsqlCommand(query, _connection))
+            {
+                command.Parameters.AddWithValue("@Id", id);
+                command.ExecuteNonQuery();
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error al eliminar factura: " + ex.Message);
+        }
+    }
+}*/
+using Dapper;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+
+using Opta3.Modelo;
+
+namespace Repositorio
+{
+    public class FacturaRepository
+    {
+        private readonly IDbConnection _dbConnection;
+
+        public FacturaRepository(IDbConnection dbConnection)
+        {
+            _dbConnection = dbConnection;
+        }
+
+        public void InsertarFactura(Factura factura)
+        {
+            var sql = @"
+                INSERT INTO public.""Factura"" (""Idfactura"", ""Idcliente"", ""Nrofactura"", ""Fechahora"", ""Total"", ""Total5"", ""Total10"", ""totaliva"", ""Totalletras"", ""Sucursal"", ""Idsucursal"")
+                VALUES (@Idfactura, @Idcliente, @Nrofactura, @Fechahora, @Total, @Total5, @Total10, @Totaliva, @Totalletras, @Sucursal, @Idsucursal)";
+            _dbConnection.Execute(sql, factura);
+        }
+
+        public Factura ObtenerFacturaPorId(int id)
+        {
+            var sql = @"SELECT * FROM public.""Factura"" WHERE ""Idfactura"" = @Id";
+            return _dbConnection.Query<Factura>(sql, new { Id = id }).FirstOrDefault();
+        }
+
+        public IEnumerable<Factura> ObtenerTodasLasFacturas()
+        {
+            var sql = @"SELECT * FROM public.""Factura""";
+            return _dbConnection.Query<Factura>(sql);
+        }
+
+        public void ActualizarFactura(Factura factura)
+        {
+            var sql = @"
+                UPDATE public.""Factura""
+                SET ""Idcliente"" = @Idcliente,
+                    ""Nrofactura"" = @Nrofactura,
+                    ""Fechahora"" = @Fechahora,
+                    ""Total"" = @Total,
+                    ""Total5"" = @Total5,
+                    ""Total10"" = @Total10,
+                    ""totaliva"" = @Totaliva,
+                    ""Totalletras"" = @Totalletras,
+                    ""Sucursal"" = @Sucursal,
+                    ""Idsucursal"" = @Idsucursal
+                WHERE ""Idfactura"" = @Idfactura";
+            _dbConnection.Execute(sql, factura);
+        }
+
+        public void EliminarFactura(int id)
+        {
+            var sql = @"DELETE FROM public.""Factura"" WHERE ""Idfactura"" = @Id";
+            _dbConnection.Execute(sql, new { Id = id });
+        }
+    }
 }
+
