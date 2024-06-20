@@ -1,193 +1,4 @@
 ﻿/*using System;
-using opta3.Repositorio;
-using Opta3.Repositorio;
-
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            string connectionString = "Host=localhost;port=5432;Database=optativo3;Username=postgres;Password=0000;";
-
-            // Crear instancias de los servicios de cliente y factura
-            Clienterepositorio clienterepositorio = new Clienterepositorio(connectionString);
-            Facturarepositorio facturarepositorio = new Facturarepositorio(connectionString);
-
-            // Ejemplo de uso
-            Cliente nuevoCliente = new Cliente("Juan", "Perez", "1234567890", "Dirección", "correo@ejemplo.com", "1234567890", "activo");
-            clienterepositorio.Add(nuevoCliente);
-
-            // Obtener todas las facturas y mostrarlas en la consola
-            Console.WriteLine("Lista de facturas:");
-            foreach (var factura in facturarepositorio.ObtenerFacturas())
-            {
-                Console.WriteLine($"ID: {factura.Id}, Número: {factura.Nrofactura}, Total: {factura.Total}");
-            }
-            servicioCliente.AgregarCliente(new ClienteModelo(...));
-            // servicioFactura.AgregarFactura(new FacturaModelo(...));
-
-
-
-            Console.WriteLine("Operaciones completada");
-        }
-    }*/
-/*using System;
-using Npgsql;
-using System.Collections.Generic;
-using Opta3.Modelo;
-
-namespace Opta3
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            string connectionString = "Host=localhost;port=5432;Database=optativo3;Username=postgres;Password=0000;";
-            using (var connection = new NpgsqlConnection(connectionString))
-            {
-                connection.Open();
-
-                var clienteRepository = new ClienteRepository(connection);
-                var facturaRepository = new FacturaRepository(connection);
-
-                var clienteService = new ClienteService(clienteRepository);
-                var facturaService = new FacturaService(facturaRepository);
-
-                // Crear cliente de ejemplo
-                var cliente = new Cliente(1, "Jose", "gimenez", "4567333", "Mcal Lopez", "juan@example.com", "123456789", "Inactivo");
-                clienteService.InsertarCliente(cliente);
-
-                // Crear factura de ejemplo
-                var factura = new Factura(2, 1, "0001-000001", "2023-07-22 10:00:00", 100.0m, 5.0m, 10.0m, 15.0m, "Cien", "Sucursal 2");
-                facturaService.InsertarFactura(factura);
-
-                /* Leer cliente por Id leído: {clienteLeido?.Nombre} {clienteLeido?.Apellido}");
-
-                // Leer todos los clientes
-                var clienteLeido = clienteService.ObtenerClientePorId(1);
-                Console.WriteLine($"Cliente error {clienteLeido}");
-                var todosLosClientes = clienteService.ObtenerTodosLosClientes();
-                Console.WriteLine("Todos los clientes:");
-                foreach (var c in todosLosClientes)
-                {
-                    Console.WriteLine($"{c.Nombre} {c.Apellido}");
-                }
-
-                // Leer factura por Id
-                var facturaLeida = facturaService.ObtenerFacturaPorId(factura.Idfactura);
-                Console.WriteLine($"Factura leída: {facturaLeida?.Nrofactura}");
-
-                // Leer todas las facturas
-                var todasLasFacturas = facturaService.ObtenerTodasLasFacturas();
-                Console.WriteLine("Todas las facturas:");
-                foreach (var f in todasLasFacturas)
-                {
-                    Console.WriteLine($"{f.Nrofactura}");
-                }
-
-                // Actualizar cliente
-                cliente.Nombre = "Juan Actualizado";
-                clienteService.ActualizarCliente(cliente);
-                Console.WriteLine("Cliente actualizado");
-
-                // Actualizar factura
-                factura.Nrofactura = "0001-000002";
-                facturaService.ActualizarFactura(factura);
-                Console.WriteLine("Factura actualizada");
-
-                // Eliminar cliente
-                clienteService.EliminarCliente(cliente.Id);
-                Console.WriteLine("Cliente eliminado");
-
-                // Eliminar factura
-                facturaService.EliminarFactura(factura.Idfactura);
-                Console.WriteLine("Factura eliminada");
-
-                Console.WriteLine("Operaciones completadas");
-            }
-        }
-    }
-
-}*/
-/*using System;
-using Repositorio;
-using Servicios;
-using Npgsql;
-using Opta3.Modelo;
-using Modelos;
-using Opta3;
-using Opta3.Repositorio;
-
-class Program
-{
-    static void Main(string[] args)
-    {
-        string connectionString = "Host=localhost;Port=5432;Database=optativo3;Username=postgres;Password=0000;";
-        var databaseConnection = new DatabaseConnection(connectionString);
-
-        using (var connection = databaseConnection.CreateConnection())
-        {
-            var clienteRepository = new ClienteRepository(connection);
-            var facturaRepository = new FacturaRepository(connection);
-            var sucursalRepository = new SucursalRepository(connection);
-
-            var clienteService = new ClienteService(clienteRepository);
-            var facturaService = new FacturaService(facturaRepository);
-            var sucursalService = new SucursalService(sucursalRepository);
-
-            // Ejemplo de operaciones con cliente
-            var cliente = new Cliente
-            {
-                Idbanco = 3,
-                Nombre = "Juan",
-                Apellido = "Pérez",
-                Documento = "12345678",
-                Direccion = "Calle Falsa 123",
-                Mail = "juan@example.com",
-                Celular = "1234567890",
-                Estado = "Activo"
-            };
-            clienteService.InsertarCliente(cliente);
-            var clienteLeido = clienteService.ObtenerClientePorId(cliente.Id);
-            Console.WriteLine($"Cliente leído: {clienteLeido?.Nombre} {clienteLeido?.Apellido}");
-
-            // Ejemplo de operaciones con factura
-            var factura = new Factura
-            {
-                Idcliente = 4,
-                Nrofactura = "001-001-000001",
-                Fechahora = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
-                Total = 100.0m,
-                Total5 = 5.0m,
-                Total10 = 10.0m,
-                Totaliva = 15.0m,
-                Totalletras = "Cien mil trescientos",
-                Sucursal = "Sucursal 1",
-                Idsucursal = 1
-            };
-            facturaService.InsertarFactura(factura);
-            var facturaLeida = facturaService.ObtenerFacturaPorId(factura.Idfactura);
-            Console.WriteLine($"Factura leída: {facturaLeida?.Nrofactura}");
-
-            // Ejemplo de operaciones con sucursal
-            var sucursal = new Sucursal
-            {
-               
-                Descripcion = "Sucursal Mcal lopez",
-                Direccion = "Avenida Principal 1234",
-                Telefono = "0987654321",
-                Whatsapp = "0987654321",
-                Mail = "contacto@sucursal.com",
-                Estado = "Activa"
-            };
-            sucursalService.InsertarSucursal(sucursal);
-            var sucursalLeida = sucursalService.ObtenerSucursalPorId(sucursal.Id);
-            Console.WriteLine($"Sucursal leída: {sucursalLeida?.Descripcion}");
-
-            Console.WriteLine("Operaciones completadas");
-        }
-    }
-}*/
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -374,7 +185,460 @@ public class Program
 
                 Console.WriteLine("Pruebas de CRUD completadas");
             }
-        }*/
+        }*
     }
 
+}*/
+/*using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using Dapper;
+using Npgsql;
+using System.Data;
+using Opta3.Modelo;
+using Opta3.Repositorio;
+using Repositorio;
+using Opta3.Modelos;
+using Opta3;
+using Servicios;
+
+public class Program
+{
+    static void Main(string[] args)
+    {
+        string connectionString = "Host=localhost;Port=5432;Database=optativo3;Username=postgres;Password=0000;";
+        var databaseConnection = new DatabaseConnection(connectionString);
+
+        using (var connection = databaseConnection.CreateConnection())
+        {
+            var clienteRepository = new ClienteRepository(connection);
+            var facturaRepository = new FacturaRepository(connection);
+            var sucursalRepository = new SucursalRepository(connection);
+            var detallefacturaRepository = new DetallefacturaRepository(connection);
+            var productoRepository = new ProductoRepository(connection);
+
+            var clienteService = new ClienteService(clienteRepository);
+            var facturaService = new FacturaService(facturaRepository);
+            var sucursalService = new SucursalService(sucursalRepository);
+            var detallefacturaService = new DetallefacturaService(detallefacturaRepository);
+            var productoService = new ProductoService(productoRepository);
+
+            // Ejemplo de operaciones con cliente
+            var cliente = new Cliente
+            {
+                Id = 36,
+                Idbanco = 4,
+                Nombre = "andres",
+                Apellido = "perez",
+                Documento = "5050321",
+                Direccion = "Av Lopez silva",
+                Mail = "andrespe@hotmail.com",
+                Celular = "0982666999",
+                Estado = "Activo"
+            };
+            clienteService.InsertarCliente(cliente);
+            var clienteLeido = clienteService.ObtenerClientePorId(cliente.Id);
+            Console.WriteLine($"Cliente leído: {clienteLeido?.Nombre} {clienteLeido?.Apellido}");
+
+            // Ejemplo de operaciones con sucursal
+            var sucursal = new Sucursal
+            {
+                Id = 8,
+                Descripcion = "Sucursal Max Center",
+                Direccion = "Avenida brasil",
+                Telefono = "0987222444",
+                Whatsapp = "0987899123",
+                Mail = "centermax1@gmail.com",
+                Estado = "Activa"
+            };
+            sucursalService.InsertarSucursal(sucursal);
+            var sucursalLeida = sucursalService.ObtenerSucursalPorId(sucursal.Id);
+            Console.WriteLine($"Sucursal leída: {sucursalLeida?.Descripcion}");
+
+            // Asegurarse de que existen las referencias necesarias antes de insertar la factura
+            if (clienteLeido != null && sucursalLeida != null)
+            {
+                // Ejemplo de operaciones con factura
+                var factura = new Factura
+                {
+                    Idfactura = 7,
+                    Idcliente = clienteLeido.Id,
+                    Nrofactura = "001-001-187221",
+                    Fechahora = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                    Total = 100.0m,
+                    Total5 = 5.0m,
+                    Total10 = 10.0m,
+                    Totaliva = 15.0m,
+                    Totalletras = "Cien mil ",
+                    Sucursal = "Sucursal Max Center",
+                    Idsucursal = sucursalLeida.Id
+                };
+                facturaService.InsertarFactura(factura);
+                var facturaLeida = facturaService.ObtenerFacturaPorId(factura.Idfactura);
+                Console.WriteLine($"Factura leída: {facturaLeida?.Nrofactura}");
+
+                // Ejemplo de operaciones con detallefactura
+                var detallefactura = new Detallefactura
+                {
+                    Id = 1,
+                    Idfactura = facturaLeida.Idfactura,
+                    Idproducto = 1,
+                    Cantproducto = "5",
+                    Subtotal = 50
+                };
+                detallefacturaService.InsertarDetallefactura(detallefactura);
+                var detallefacturaLeida = detallefacturaService.ObtenerDetallefacturaPorId(detallefactura.Idfactura);
+                Console.WriteLine($"Detalle factura leído: {detallefacturaLeida?.Cantproducto}");
+
+                // Actualizar y eliminar ejemplo de operaciones con detallefactura
+                detallefactura.Cantproducto = "10";
+                detallefacturaService.ActualizarDetallefactura(detallefactura);
+                var detallefacturaActualizada = detallefacturaService.ObtenerDetallefacturaPorId(detallefactura.Idfactura);
+                Console.WriteLine($"Detalle factura actualizado: {detallefacturaActualizada?.Cantproducto}");
+
+                detallefacturaService.EliminarDetallefactura(detallefactura.Idfactura);
+                var detallefacturaEliminada = detallefacturaService.ObtenerDetallefacturaPorId(detallefactura.Idfactura);
+                Console.WriteLine($"Detalle factura eliminada: {detallefacturaEliminada == null}");
+
+                // Ejemplo de operaciones con producto
+                var producto = new Producto
+                {
+                    Id = 1,
+                    Nombre = " Samsung Buds",
+                    Descripcion = " Auriculares Inalambricos",
+                    Precio = 100.0m,
+                    Stock = 50
+                };
+                productoService.InsertarProducto(producto);
+                var productoLeido = productoService.ObtenerProductoPorId(producto.Id);
+                Console.WriteLine($"Producto leído: {productoLeido?.Nombre}");
+
+                producto.Nombre = "Producto 1 Actualizado";
+                productoService.ActualizarProducto(producto);
+                var productoActualizado = productoService.ObtenerProductoPorId(producto.Id);
+                Console.WriteLine($"Producto actualizado: {productoActualizado?.Nombre}");
+
+                productoService.EliminarProducto(producto.Id);
+                var productoEliminado = productoService.ObtenerProductoPorId(producto.Id);
+                Console.WriteLine($"Producto eliminado: {productoEliminado == null}");
+            }
+        }
+    }
+}*/
+/*using System;
+using System.Collections.Generic;
+using Dapper;
+using Npgsql;
+using Opta3.Modelo;
+using Opta3.Repositorio;
+using Repositorio;
+using Opta3.Modelos;
+using Opta3;
+using Servicios;
+using System.Data;
+
+public class Program
+{
+    static void Main(string[] args)
+    {
+        string connectionString = "Host=localhost;Port=5432;Database=optativo3;Username=postgres;Password=0000;";
+        var databaseConnection = new DatabaseConnection(connectionString);
+
+        using (var connection = databaseConnection.CreateConnection())
+        {
+            var clienteRepository = new ClienteRepository(connection);
+            var facturaRepository = new FacturaRepository(connection);
+            var sucursalRepository = new SucursalRepository(connection);
+            var detallefacturaRepository = new DetallefacturaRepository(connection);
+            var productoRepository = new ProductoRepository(connection);
+
+            var clienteService = new ClienteService(clienteRepository);
+            var facturaService = new FacturaService(facturaRepository);
+            var sucursalService = new SucursalService(sucursalRepository);
+            var detallefacturaService = new DetallefacturaService(detallefacturaRepository);
+            var productoService = new ProductoService(productoRepository);
+
+            // Ejemplo de operaciones con cliente
+            var cliente = new Cliente
+            {
+                Id = 38,
+                Idbanco = 6,
+                Nombre = "Jamin",
+                Apellido = "perez",
+                Documento = "5050321",
+                Direccion = "Av Gral silva",
+                Mail = "jazperez@hotmail.com",
+                Celular = "0982000000",
+                Estado = "Activo"
+            };
+            clienteService.InsertarCliente(cliente);
+            var clienteLeido = clienteService.ObtenerClientePorId(cliente.Id);
+            Console.WriteLine($"Cliente leído: {clienteLeido?.Nombre} {clienteLeido?.Apellido}");
+
+            // Ejemplo de operaciones con sucursal
+            var sucursal = new Sucursal
+            {
+                Id = 9,
+                Descripcion = "Sucursal HospiCenter",
+                Direccion = "Avenida america",
+                Telefono = "0987111333",
+                Whatsapp = "0987222900",
+                Mail = "centerhospi@gmail.com",
+                Estado = "Activa"
+            };
+            sucursalService.InsertarSucursal(sucursal);
+            var sucursalLeida = sucursalService.ObtenerSucursalPorId(sucursal.Id);
+            Console.WriteLine($"Sucursal leída: {sucursalLeida?.Descripcion}");
+
+            // Asegurarse de que existen las referencias necesarias antes de insertar la factura
+            if (clienteLeido != null && sucursalLeida != null)
+            {
+                // Ejemplo de operaciones con factura
+                var factura = new Factura
+                {
+                    Idfactura = 8,
+                    Idcliente = clienteLeido.Id,
+                    Nrofactura = "001-001-180078",
+                    Fechahora = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                    Total = 100.0m,
+                    Total5 = 5.0m,
+                    Total10 = 10.0m,
+                    Totaliva = 15.0m,
+                    Totalletras = "Cien mil guaranies ",
+                    Sucursal = "Sucursal hospiCenter",
+                    Idsucursal = sucursalLeida.Id
+                };
+                facturaService.InsertarFactura(factura);
+                var facturaLeida = facturaService.ObtenerFacturaPorId(factura.Idfactura);
+                Console.WriteLine($"Factura leída: {facturaLeida?.Nrofactura}");
+
+                // Ejemplo de operaciones con detallefactura
+                var detallefactura = new Detallefactura
+                {
+                    Id = 1,
+                    Idfactura = facturaLeida.Idfactura,
+                    Idproducto = 1,
+                    Cantproducto = "5",
+                    Subtotal = 50
+                };
+                detallefacturaService.InsertarDetallefactura(detallefactura);
+                var detallefacturaLeida = detallefacturaService.ObtenerDetallefacturaPorId(detallefactura.Idfactura);
+                Console.WriteLine($"Detalle factura leído: {detallefacturaLeida?.Cantproducto}");
+
+                // Actualizar y eliminar ejemplo de operaciones con detallefactura
+                detallefactura.Cantproducto = "10";
+                detallefacturaService.ActualizarDetallefactura(detallefactura);
+                var detallefacturaActualizada = detallefacturaService.ObtenerDetallefacturaPorId(detallefactura.Idfactura);
+                Console.WriteLine($"Detalle factura actualizado: {detallefacturaActualizada?.Cantproducto}");
+
+                detallefacturaService.EliminarDetallefactura(detallefactura.Idfactura);
+                var detallefacturaEliminada = detallefacturaService.ObtenerDetallefacturaPorId(detallefactura.Idfactura);
+                Console.WriteLine($"Detalle factura eliminada: {detallefacturaEliminada == null}");
+
+                // Ejemplo de operaciones con producto
+                var producto = new Producto
+                {
+                    Id = 1,
+                    Nombre = " Samsung Buds",
+                    Descripcion = " Auriculares Inalambricos",
+                    Precio = 100.0m,
+                    Stock = 50
+                };
+                productoService.InsertarProducto(producto);
+                var productoLeido = productoService.ObtenerProductoPorId(producto.Id);
+                Console.WriteLine($"Producto leído: {productoLeido?.Nombre}");
+
+                producto.Nombre = "Producto 1 Actualizado";
+                productoService.ActualizarProducto(producto);
+                var productoActualizado = productoService.ObtenerProductoPorId(producto.Id);
+                Console.WriteLine($"Producto actualizado: {productoActualizado?.Nombre}");
+
+                productoService.EliminarProducto(producto.Id);
+                var productoEliminado = productoService.ObtenerProductoPorId(producto.Id);
+                Console.WriteLine($"Producto eliminado: {productoEliminado == null}");
+            }
+
+            // Listar todos los datos de las tablas
+            ListarDatos(connection, "Cliente");
+            ListarDatos(connection, "Sucursal");
+            ListarDatos(connection, "Factura");
+            ListarDatos(connection, "Productos");
+            ListarDatos(connection, "Detalle_factura");
+        }
+    }
+
+    static void ListarDatos(IDbConnection connection, string tableName)
+    {
+        string sql = $"SELECT * FROM {tableName}";
+        var results = connection.Query(sql);
+
+        Console.WriteLine($"Datos de la tabla {tableName}:");
+        foreach (var row in results)
+        {
+            foreach (var column in row)
+            {
+                Console.Write($"{column.Key}: {column.Value}\t");
+            }
+            Console.WriteLine();
+        }
+    }
+}*/
+using System;
+using System.Collections.Generic;
+using Dapper;
+using Npgsql;
+using Opta3.Modelo;
+using Opta3.Repositorio;
+using Repositorio;
+using Opta3.Modelos;
+using Opta3;
+using Servicios;
+using System.Data;
+
+public class Program
+{
+    static void Main(string[] args)
+    {
+        string connectionString = "Host=localhost;Port=5432;Database=optativo3;Username=postgres;Password=0000;";
+        var databaseConnection = new DatabaseConnection(connectionString);
+
+        using (var connection = databaseConnection.CreateConnection())
+        {
+            var clienteRepository = new ClienteRepository(connection);
+            var facturaRepository = new FacturaRepository(connection);
+            var sucursalRepository = new SucursalRepository(connection);
+            var detallefacturaRepository = new DetallefacturaRepository(connection);
+            var productoRepository = new ProductoRepository(connection);
+
+            var clienteService = new ClienteService(clienteRepository);
+            var facturaService = new FacturaService(facturaRepository);
+            var sucursalService = new SucursalService(sucursalRepository);
+            var detallefacturaService = new DetallefacturaService(detallefacturaRepository);
+            var productoService = new ProductoService(productoRepository);
+
+            // Ejemplo de operaciones con cliente
+            var cliente = new Cliente
+            {
+                Id = 4,
+                Idbanco = 2,
+                Nombre = "Sofia",
+                Apellido = "gimenez",
+                Documento = "5050321",
+                Direccion = "Av Molas Perez",
+                Mail = "sofiamenez01@hotmail.com",
+                Celular = "0982111789",
+                Estado = "Activo"
+            };
+            clienteService.InsertarCliente(cliente);
+            var clienteLeido = clienteService.ObtenerClientePorId(cliente.Id);
+            Console.WriteLine($"Cliente leído: {clienteLeido?.Nombre} {clienteLeido?.Apellido}");
+
+            // Ejemplo de operaciones con sucursal
+            var sucursal = new Sucursal
+            {
+                Id = 13,
+                Descripcion = "Sucursal HospiCenter 3",
+                Direccion = "Av uruguay",
+                Telefono = "0987111333",
+                Whatsapp = "0987222900",
+                Mail = "centerhospi3@gmail.com",
+                Estado = "Inactiva"
+            };
+            sucursalService.InsertarSucursal(sucursal);
+            var sucursalLeida = sucursalService.ObtenerSucursalPorId(sucursal.Id);
+            Console.WriteLine($"Sucursal leída: {sucursalLeida?.Descripcion}");
+
+            // Asegurarse de que existen las referencias necesarias antes de insertar la factura
+            if (clienteLeido != null && sucursalLeida != null)
+            {
+                // Ejemplo de operaciones con factura
+                var factura = new Factura
+                {
+                    Idfactura = 12,
+                    Idcliente = clienteLeido.Id,
+                    Nrofactura = "001-001-205578",
+                    Fechahora = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                    Total = 100.0m,
+                    Total5 = 5.0m,
+                    Total10 = 10.0m,
+                    Totaliva = 15.0m,
+                    Totalletras = "Cien mil guaranies ",
+                    Sucursal = "Sucursal hospiCenter 3",
+                    Idsucursal = sucursalLeida.Id
+                };
+                facturaService.InsertarFactura(factura);
+                var facturaLeida = facturaService.ObtenerFacturaPorId(factura.Idfactura);
+                Console.WriteLine($"Factura leída: {facturaLeida?.Nrofactura}");
+
+                var producto = new Producto
+                {
+                    Id = 1,
+                    Nombre = "Samsung Buds",
+                    Descripcion = "Auriculares Inalámbricos",
+                    CantMinima = 10,
+                    PrecioCompra = 80.0m,
+                    PrecioVenta = 120.0m,
+                    Categoria = "Electrónica",
+                    Marca = "Samsung",
+                    Estado = "Disponible",
+                    Precio = 100.0m,
+                    Stock = 50
+                };
+                productoService.InsertarProducto(producto);
+                var productoLeido = productoService.ObtenerProductoPorId(producto.Id);
+                Console.WriteLine($"Producto leído: {productoLeido?.Nombre}");
+
+                // Ejemplo de operaciones con detallefactura
+                var detallefactura = new Detallefactura
+                {
+                    Id = 2,
+                    Idfactura = facturaLeida.Idfactura,
+                    Idproducto = 1,
+                    Cantproducto = "5",
+                    Subtotal = 50
+                };
+                detallefacturaService.InsertarDetallefactura(detallefactura);
+                var detallefacturaLeida = detallefacturaService.ObtenerDetallefacturaPorId(detallefactura.Id);
+                Console.WriteLine($"Detalle factura leído: {detallefacturaLeida?.Cantproducto}");
+
+                // Ejemplo de operaciones con producto
+                
+                /*/ Actualizar producto
+                producto.Precio = 110.0m;
+                productoService.ActualizarProducto(producto);
+                Console.WriteLine("Producto actualizado correctamente.");
+
+                // Eliminar producto
+                productoService.EliminarProducto(producto.Id);
+                Console.WriteLine("Producto eliminado correctamente.");*/
+            }
+
+            // Listar todos los datos de las tablas
+            ListarDatos(connection, "Cliente");
+            ListarDatos(connection, "Sucursal");
+            ListarDatos(connection, "Factura");
+            ListarDatos(connection, "Productos");
+            ListarDatos(connection, "Detalle_factura");
+        }
+    }
+
+    static void ListarDatos(IDbConnection connection, string tableName)
+    {
+        string sql = $"SELECT * FROM {tableName}";
+        var results = connection.Query(sql);
+
+        Console.WriteLine($"Datos de la tabla {tableName}:");
+        foreach (var row in results)
+        {
+            foreach (var column in row)
+            {
+                Console.Write($"{column.Key}: {column.Value}\t");
+            }
+            Console.WriteLine();
+        }
+    }
 }
+
+
+

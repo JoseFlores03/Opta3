@@ -6,32 +6,6 @@ using System.Threading.Tasks;
 
 namespace Opta3.Modelo
 {
-    /* public class Cliente
-     {
-         public int Id { get; set; }
-         public int Idbanco { get; set; }
-         public string Nombre { get; set; }
-         public string Apellido { get; set; }
-         public string Documento { get; set; }
-         public string Direccion { get; set; }
-         public string Mail { get; set; }
-         public string Celular { get; set; }
-         public string Estado { get; set; }
-
-         public Cliente() { }
-
-         public Cliente(int idbanco, string nombre, string apellido, string documento, string direccion, string mail, string celular, string estado)
-         {
-             Idbanco = idbanco;
-             Nombre = nombre;
-             Apellido = apellido;
-             Documento = documento;
-             Direccion = direccion;
-             Mail = mail;
-             Celular = celular;
-             Estado = estado;
-         }
-     }*/
     public class Cliente
     {
         public int Id { get; set; }
