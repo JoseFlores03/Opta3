@@ -4,39 +4,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
 namespace Opta3.Modelo
 {
     public class Producto
     {
         public int Id { get; set; }
-        public string Nombre { get; set; } = string.Empty;
         public string Descripcion { get; set; } = string.Empty;
-        public decimal Precio { get; set; }
-        public int Stock { get; set; }
-        public int CantMinima { get; set; }  
-        public decimal PrecioCompra { get; set; }  
-        public decimal PrecioVenta { get; set; }  
-        public string Categoria { get; set; }  
-        public string Marca { get; set; }  
-        public string Estado { get; set; }  
+        public string Cantminima { get; set; } = string.Empty;
+        public int Preciocompra { get; set; }
+        public string Precioventa { get; set; } = string.Empty;
+        public string Categoria { get; set; } = string.Empty;
+        public string Marca { get; set; } = string.Empty;
+        public string Estado { get; set; } = string.Empty;
+        public string Cantstock { get; set; } = string.Empty;
 
         public Producto() { }
 
-        public Producto(string nombre, string descripcion, decimal precio, int stock,
-                        int cantMinima, decimal precioCompra, decimal precioVenta,
-                        string categoria, string marca, string estado)
+        public Producto(string descripcion, string cantminima, int preciocompra, string precioventa, string categoria, string marca, string estado, string cantstock)
         {
-            Nombre = nombre;
             Descripcion = descripcion;
-            Precio = precio;
-            Stock = stock;
-            CantMinima = cantMinima;
-            PrecioCompra = precioCompra;
-            PrecioVenta = precioVenta;
+            Cantminima = cantminima;
+            Preciocompra = preciocompra;
+            Precioventa = precioventa;
             Categoria = categoria;
             Marca = marca;
             Estado = estado;
+            Cantstock = cantstock;
         }
     }
 }

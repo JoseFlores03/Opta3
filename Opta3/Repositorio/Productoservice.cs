@@ -39,117 +39,56 @@ namespace Servicios
         }
     }
 }*/
+using System;
 using Opta3.Modelo;
 using Opta3.Repositorio;
-using System;
-using System.Collections.Generic;
 
-namespace Servicios
+namespace Opta3.Servicio
 {
-    public class ProductoService
+    public class ProductoServicio
     {
-        private readonly ProductoRepository _productoRepository;
+        private readonly ProductoRepository _repositorio;
 
-        public ProductoService(ProductoRepository productoRepository)
+        public ProductoServicio(ProductoRepository repositorio)
         {
-            _productoRepository = productoRepository;
+            _repositorio = repositorio;
         }
 
-        public void InsertarProducto(Producto producto)
+        public void Insertar(Producto producto)
         {
-            // Validaciones antes de insertar
-            ValidarCamposObligatorios(producto);
-            ValidarCantidadMinima(producto);
-            ValidarPreciosEnterosPositivos(producto);
-
-            _productoRepository.InsertarProducto(producto);
+            ValidarProducto(producto);
+            _repositorio.InsertarProducto(producto);
         }
 
-        public Producto ObtenerProductoPorId(int id)
+        public IEnumerable<Producto> ObtenerTodos()
         {
-            return _productoRepository.ObtenerProductoPorId(id);
+            return _repositorio.ObtenerTodosLosProductos();
         }
 
-        public IEnumerable<Producto> ObtenerTodosLosProductos()
+        public void Actualizar(Producto producto)
         {
-            return _productoRepository.ObtenerTodosLosProductos();
+            ValidarProducto(producto);
+            _repositorio.ActualizarProducto(producto);
         }
 
-        public void ActualizarProducto(Producto producto)
+        public void Eliminar(int id)
         {
-            // Validaciones antes de actualizar
-            ValidarCamposObligatorios(producto);
-            ValidarCantidadMinima(producto);
-            ValidarPreciosEnterosPositivos(producto);
-
-            _productoRepository.ActualizarProducto(producto);
+            _repositorio.EliminarProducto(id);
         }
 
-        public void EliminarProducto(int id)
+        private void ValidarProducto(Producto producto)
         {
-            _productoRepository.EliminarProducto(id);
+            if (string.IsNullOrEmpty(producto.Descripcion) || producto.Descripcion.Length < 3)
+                throw new ArgumentException("Descripcion es obligatorio y debe tener al menos 3 caracteres.");
+            if (string.IsNullOrEmpty(producto.Categoria) || producto.Categoria.Length < 3)
+                throw new ArgumentException("Categoria es obligatorio y debe tener al menos 3 caracteres.");
+            if (producto.Preciocompra <= 0)
+                throw new ArgumentException("Preciocompra es obligatorio y debe ser un número positivo.");
+            if (string.IsNullOrEmpty(producto.Precioventa) || !decimal.TryParse(producto.Precioventa, out _))
+                throw new ArgumentException("Precioventa es obligatorio y debe ser un número válido.");
+            if (string.IsNullOrEmpty(producto.Estado) || producto.Estado.Length < 3)
+                throw new ArgumentException("Estado es obligatorio y debe tener al menos 3 caracteres.");
         }
-
-        #region Validaciones
-
-        private void ValidarCamposObligatorios(Producto producto)
-        {
-            if (string.IsNullOrWhiteSpace(producto.Nombre))
-            {
-                throw new ArgumentException("El nombre del producto es obligatorio.");
-            }
-            if (string.IsNullOrWhiteSpace(producto.Descripcion))
-            {
-                throw new ArgumentException("La descripción del producto es obligatoria.");
-            }
-            if (producto.Precio <= 0)
-            {
-                throw new ArgumentException("El precio del producto debe ser mayor que cero.");
-            }
-            if (producto.Stock < 0)
-            {
-                throw new ArgumentException("El stock del producto no puede ser negativo.");
-            }
-            if (producto.CantMinima <= 1)
-            {
-                throw new ArgumentException("La cantidad mínima del producto debe ser mayor que 1.");
-            }
-            if (producto.PrecioCompra < 0)
-            {
-                throw new ArgumentException("El precio de compra del producto no puede ser negativo.");
-            }
-            if (producto.PrecioVenta < 0)
-            {
-                throw new ArgumentException("El precio de venta del producto no puede ser negativo.");
-            }
-        }
-
-        private void ValidarCantidadMinima(Producto producto)
-        {
-            if (producto.CantMinima <= 1)
-            {
-                throw new ArgumentException("La cantidad mínima del producto debe ser mayor que 1.");
-            }
-        }
-
-        private void ValidarPreciosEnterosPositivos(Producto producto)
-        {
-            if (producto.PrecioCompra < 0 || !EsEnteroPositivo(producto.PrecioCompra))
-            {
-                throw new ArgumentException("El precio de compra del producto debe ser un número entero positivo.");
-            }
-            if (producto.PrecioVenta < 0 || !EsEnteroPositivo(producto.PrecioVenta))
-            {
-                throw new ArgumentException("El precio de venta del producto debe ser un número entero positivo.");
-            }
-        }
-
-        private bool EsEnteroPositivo(decimal valor)
-        {
-            return Math.Floor(valor) == valor && valor > 0;
-        }
-
-        #endregion
     }
 }
 
